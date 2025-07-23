@@ -142,11 +142,6 @@ for (let i = 0; i < collection.length; i++) {
 /// -------------------------------------------------------
 /// Getting Total Quantity from Lines table
 /// -------------------------------------------------------
-var collection = document.getElementsByClassName("s-slot-stack s-slot-cat-section s-page-sep-stack");
-
-var formula = [];
-var description1 = [];
-var description = [];
 var totalQty = []; // <-- Add this line
 
 for (let i = 0; i < collection.length; i++) {
@@ -157,35 +152,19 @@ for (let i = 0; i < collection.length; i++) {
         console.log('Getting data from Lines table...');
 
         // console.log("found Application table");
-
         var tableGrids = collection[i].getElementsByClassName("s-grid-table-body");
         
 
         if (tableGrids.length > 0) {
-            var rows = tableGrids[0].rows;
-            console.log("Lines table length: " + rows.length);
-
-            for (let j = 0; j < rows.length; j++) {
-
+            var secondTableRows = tableGrids[1].rows;
+            for (let j = 0; j < secondTableRows.length; j++) {
                 // Extract Total qty. value (assume 6th cell, index 5)
-                var qtyCell = rows[j].getElementsByClassName("s-inplace-value-read")[5];
+                var qtyCell = rows[j].getElementsByClassName("s-inplace-input s-inplace-input-num s-readonly")[0];
                 if (qtyCell) {
                     totalQty.push(qtyCell.innerText || qtyCell.textContent);
                 } else {
                     totalQty.push("");
                 }
-            } 
-
-            var secondTableRows = tableGrids[1].rows;
-            for (let j = 0; j < secondTableRows.length; j++) {
-                // var columns = rows[j].getElementsByClassName("s-grid-cell-edit s-inplace s-readonly");
-                // console.log("found columns");
-
-                var descriptionString = secondTableRows[j].getElementsByClassName("s-inplace-value-read");
-                if (descriptionString.length > 0) {
-                    // console.log("found description column: " + descriptionString[0].value);
-                    description.push(descriptionString[0].innerHTML);
-                }       
             }
         }
     }
