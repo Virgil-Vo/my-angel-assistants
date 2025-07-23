@@ -1,18 +1,55 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <style>
-      html, body {
-        height: 200px;
-        width: 400px;
+      body {
+        margin: 0;
+        padding: 0;
+        width: 320px;
+        height: 180px;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: #f7f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        padding: 32px 24px;
+        text-align: center;
+        width: 90%;
+        max-width: 280px;
+      }
+      .icon {
+        font-size: 40px;
+        margin-bottom: 16px;
+      }
+      .message {
+        font-size: 18px;
+        color: #222;
+        margin-bottom: 8px;
+      }
+      .sub {
+        font-size: 14px;
+        color: #888;
+      }
+      .success {
+        color: #27ae60;
+      }
+      .error {
+        color: #e74c3c;
       }
     </style>
   </head>
   <body>
-    <h1>My Angel</h1>
-    <h2>Auto export Sale Order data!</h2>
-    <!-- <p>Numbers: <input id="searchTerm" type="text" name="value"></p> -->
-    <button id='fillForm'>Get Product Data</button>
-    <script src='action.js'></script>
+    <div class="container">
+      <div id="icon" class="icon">⏳</div>
+      <div id="message" class="message">Exporting product data...</div>
+      <div id="sub" class="sub"></div>
+    </div>
+    <script src="action.js"></script>
   </body>
-</html>
+</html> 

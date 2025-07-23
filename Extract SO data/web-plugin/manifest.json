@@ -1,11 +1,11 @@
 {
     "manifest_version": 3,
-    "name": "Test Form Filler",
-    "description": "Populate fields and call an api",
-    "homepage_url": "http://www.lethcode.com",
+    "name": "Export Sale Order Data",
+    "description": "Export data and copy to clipboard",
+    "homepage_url": "https://github.com/Virgil-Vo/my-angel-assistants",
     "version": "1.0",
     "action": {
-        "default_title": "Click here to load form data!",
+        "default_title": "Export data to clipboard!",
         "default_popup": "index.html"
     },
     "host_permissions": ["*://*/*"],
@@ -13,6 +13,6 @@
         "scripting",
         "tabs",
         "activeTab",
-	"clipboardWrite"
+        "clipboardWrite"
     ]
 }
