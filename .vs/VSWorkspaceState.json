@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Extract SO data",
+    "\\Extract SO data\\sample-page",
+    "\\Extract SO data\\web-plugin"
   ],
-  "SelectedNode": "\\D:\\Work\\my-angel-assistants",
+  "SelectedNode": "\\README.md",
   "PreviewInSolutionExplorer": false
 }

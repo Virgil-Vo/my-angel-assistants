@@ -150,14 +150,14 @@ for (let i = 0; i < collection.length; i++) {
 
     if (tableTitles.length > 0 && tableTitles[0].innerHTML.includes('Lines')) {
         console.log('Getting data from Lines table...');
-        var tableGrids = collection[i].getElementsByClassName("s-grid-table-body");
+        var tableGrids = collection[i].getElementsByClassName("s-grid-table-body")[0];
    
         var gridTableRows = tableGrids.rows;
         for (let j = 0; j < gridTableRows.length; j++) {
             // Extract Total qty. value (assume 6th cell, index 5)
-            var qtyCell = gridTableRows[j].getElementsByClassName("s-inplace-input s-inplace-input-num s-readonly")[0];
+            var qtyCell = gridTableRows[j].getElementsByClassName("s-inplace-input s-readonly")[5];
             if (qtyCell) {
-                totalQty.push(qtyCell.innerText || qtyCell.textContent);
+                totalQty.push(qtyCell.value);
             } else {
                 totalQty.push("");
             }
