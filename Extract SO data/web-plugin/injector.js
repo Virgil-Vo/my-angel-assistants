@@ -150,21 +150,16 @@ for (let i = 0; i < collection.length; i++) {
 
     if (tableTitles.length > 0 && tableTitles[0].innerHTML.includes('Lines')) {
         console.log('Getting data from Lines table...');
-
-        // console.log("found Application table");
         var tableGrids = collection[i].getElementsByClassName("s-grid-table-body");
-        
-
-        if (tableGrids.length > 0) {
-            var secondTableRows = tableGrids[1].rows;
-            for (let j = 0; j < secondTableRows.length; j++) {
-                // Extract Total qty. value (assume 6th cell, index 5)
-                var qtyCell = rows[j].getElementsByClassName("s-inplace-input s-inplace-input-num s-readonly")[0];
-                if (qtyCell) {
-                    totalQty.push(qtyCell.innerText || qtyCell.textContent);
-                } else {
-                    totalQty.push("");
-                }
+   
+        var gridTableRows = tableGrids.rows;
+        for (let j = 0; j < gridTableRows.length; j++) {
+            // Extract Total qty. value (assume 6th cell, index 5)
+            var qtyCell = gridTableRows[j].getElementsByClassName("s-inplace-input s-inplace-input-num s-readonly")[0];
+            if (qtyCell) {
+                totalQty.push(qtyCell.innerText || qtyCell.textContent);
+            } else {
+                totalQty.push("");
             }
         }
     }
