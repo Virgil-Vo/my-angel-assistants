@@ -2,6 +2,7 @@
     "manifest_version": 3,
     "name": "Test Form Filler",
     "description": "Populate fields and call an api",
+    "homepage_url": "http://www.lethcode.com",
     "version": "1.0",
     "action": {
         "default_title": "Click here to load form data!",
@@ -11,6 +12,7 @@
     "permissions": [
         "scripting",
         "tabs",
-        "activeTab"
+        "activeTab",
+	"clipboardWrite"
     ]
 }

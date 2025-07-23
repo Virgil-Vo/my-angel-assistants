@@ -1,127 +1,249 @@
-// -------------------------------------------------------
-// injector.js - Extracts key values from the Sales Order page
-// -------------------------------------------------------
-// This script is injected into the page to extract:
-//   - Number, Reference, Date fields
-//   - Application table data (formula, description)
-//   - Lines table data (Total qty.)
-//   - Copies the extracted data to the clipboard in a tab-separated format
-//
-// Sample copied data:
-// Number\tReference\tDate
-// OE2506875\tREF123\t25/05/2024
-// Description from second table row 1\t
-// Description from second table row 2\t
-// ...
-// Formula1\tDescription1-1\tTotalQty1
-// Formula2\tDescription1-2\tTotalQty2
-// ...
-// -------------------------------------------------------
+/// -------------------------------------------------------
+/// Adding number field
+/// -------------------------------------------------------
+/*
+console.log('Finding `Number` field...');
+var collection = document.getElementsByClassName("s-field-input");
 
-// -------------------------------------------------------
-// Extract Number, Reference, Date fields
-// -------------------------------------------------------
+for (let i = 0; i < collection.length; i++) {
+    var label = document.querySelector('label[for=\"'+collection[i].id+'\"]');
+    // console.log(collection[i].id + " : "+ label.textContent);
+
+    if (label && label.textContent == 'Number') {
+        console.log('`Number` field found, adding value...');
+        collection[i].value = number;
+        
+        const enterEvent = new KeyboardEvent('keydown', {
+            bubbles: true, cancelable: true, keyCode: 13
+        });
+        document.body.dispatchEvent(enterEvent);
+        console.log('Added Value to `Number` field');
+    }
+}
+*/
+
+
+/// -------------------------------------------------------
+/// Getting Number
+/// -------------------------------------------------------
+var collection = document.getElementsByClassName("s-field-input");
+
 var number = '';
+
+for (let i = 0; i < collection.length; i++) {
+    var label = document.querySelector('label[for=\"'+collection[i].id+'\"]');
+    // console.log(collection[i].id + " : "+ label.textContent);
+    if (label) {
+        switch (label.textContent) {
+            case 'Number': 
+                console.log('Getting `Number` value...');
+                number = collection[i].value;
+                break;
+        }
+    }
+}
+
+/// -------------------------------------------------------
+/// Getting Reference, Date value
+/// -------------------------------------------------------
+var collection = document.getElementsByClassName("s-field-input s-readonly");
+
 var reference = '';
 var date = '';
 
-var collection = document.getElementsByClassName("s-field-input");
 for (let i = 0; i < collection.length; i++) {
-    var label = document.querySelector('label[for="'+collection[i].id+'"]');
-    if (label && label.textContent == 'Number') {
-        number = collection[i].value;
-    }
-}
-
-collection = document.getElementsByClassName("s-field-input s-readonly");
-for (let i = 0; i < collection.length; i++) {
-    var label = document.querySelector('label[for="'+collection[i].id+'"]');
+    var label = document.querySelector('label[for=\"'+collection[i].id+'\"]');
+    // console.log(collection[i].id + " : "+ label.textContent);
     if (label) {
-        if (label.textContent == 'Reference') {
-            reference = collection[i].value;
-        } else if (label.textContent == 'Date') {
-            var dateRaw = collection[i].value;
-            var parts = dateRaw.split("/");
-            date = parts[1] + '/' + parts[0] + '/' + parts[2];
+        switch (label.textContent) {
+            case 'Reference': 
+                console.log('Getting `Reference` value...');
+                reference = collection[i].value;
+                break;
+            case 'Date':
+                console.log('Getting `Date` value...');
+                var dateRaw = collection[i].value;
+                var parts = dateRaw.split("/");
+                date = parts[1] + '/' + parts[0] + '/' + parts[2];
+                break;
         }
     }
 }
 
-// -------------------------------------------------------
-// Extract Application table data (formula, description)
-// -------------------------------------------------------
+console.log("------------------------------------------------");
+console.log("ref: " + reference + " | date: " + date);
+console.log("------------------------------------------------");
+
+/// -------------------------------------------------------
+/// Getting Application formula
+/// -------------------------------------------------------
+var collection = document.getElementsByClassName("s-slot-stack s-slot-cat-section s-page-sep-stack");
+
+var formula = [];
+var description1 = [];
+var appliString = [];
+var legislativeString = [];
+
+for (let i = 0; i < collection.length; i++) {
+    var tableTitles = collection[i].getElementsByClassName("s-h1-titles-h1-title-text");
+    //console.log(tableTitles[0]);
+
+    if (tableTitles.length > 0 && tableTitles[0].innerHTML.includes('Applications')) {
+        console.log('Getting data from Applications table...');
+
+        // console.log("found Application table");
+
+        var tableGrids = collection[i].getElementsByClassName("s-grid-table-body");
+        
+
+        if (tableGrids.length > 0) {
+            var rows = tableGrids[0].rows;
+            console.log("Applications table length: " + rows.length);
+
+            for (let j = 0; j < rows.length; j++) {
+                // var columns = rows[j].getElementsByClassName("s-grid-cell-edit s-inplace s-readonly");
+                // console.log("found columns");
+
+                var formulaString = rows[j].getElementsByClassName("s-inplace-input s-readonly");
+                if (formulaString.length > 0) {
+                    // console.log("found formula column: " + formulaString[0].value);
+                    formula.push(formulaString[0].value);
+                }
+
+                var description1String = rows[j].getElementsByClassName("s-inplace-value-read");
+                if (description1String.length > 0) {
+                    // console.log("found description1 column: " + description1String[0].innerHTML);
+                    description1.push(description1String[0].innerHTML);
+                }               
+            } 
+
+            var secondTableRows = tableGrids[1].rows;
+            for (let j = 0; j < secondTableRows.length; j++) {
+                // var columns = rows[j].getElementsByClassName("s-grid-cell-edit s-inplace s-readonly");
+                // console.log("found columns");
+
+                var appliStringRaw = secondTableRows[j].getElementsByClassName("s-grid-cell-value-edit s-inplace-value-edit s-mandatory");
+                if (appliStringRaw.length > 0) {
+                    // console.log("found description column: " + appliString[0].value);
+                    appliString.push(appliStringRaw[0].getElementsByClassName("s-inplace-input")[0].value);
+                }       
+                // console.log("found columns");
+                    
+                var legislativeStringRaw = secondTableRows[j].getElementsByClassName("s-grid-cell-value-edit s-inplace-value-edit s-number");
+                if (legislativeStringRaw.length > 0) {
+                    // console.log("found description column: " + legislativeString[0].value);
+                    legislativeString.push(legislativeStringRaw[0].getElementsByClassName("s-inplace-input s-inplace-input-num")[0].value);
+                }       
+            }
+        }
+    }
+}
+
+/// -------------------------------------------------------
+/// Getting Total Quantity from Lines table
+/// -------------------------------------------------------
+var collection = document.getElementsByClassName("s-slot-stack s-slot-cat-section s-page-sep-stack");
+
 var formula = [];
 var description1 = [];
 var description = [];
+var totalQty = []; // <-- Add this line
 
-var sectionCollection = document.getElementsByClassName("s-slot-stack s-slot-cat-section s-page-sep-stack");
-for (let i = 0; i < sectionCollection.length; i++) {
-    var tableTitles = sectionCollection[i].getElementsByClassName("s-h1-titles-h1-title-text");
-    if (tableTitles.length > 0 && tableTitles[0].innerHTML.includes('Applications')) {
-        var tableGrids = sectionCollection[i].getElementsByClassName("s-grid-table-body");
-        if (tableGrids.length > 0) {
-            var rows = tableGrids[0].rows;
-            for (let j = 0; j < rows.length; j++) {
-                var formulaString = rows[j].getElementsByClassName("s-inplace-input s-readonly");
-                if (formulaString.length > 0) {
-                    formula.push(formulaString[0].value);
-                }
-                var description1String = rows[j].getElementsByClassName("s-inplace-value-read");
-                if (description1String.length > 0) {
-                    description1.push(description1String[0].innerHTML);
-                }
-            }
-            var secondTableRows = tableGrids[1].rows;
-            for (let j = 0; j < secondTableRows.length; j++) {
-                var descriptionString = secondTableRows[j].getElementsByClassName("s-inplace-value-read");
-                if (descriptionString.length > 0) {
-                    description.push(descriptionString[0].innerHTML);
-                }
-            }
-        }
-    }
-}
+for (let i = 0; i < collection.length; i++) {
+    var tableTitles = collection[i].getElementsByClassName("s-h1-titles-h1-title-text");
+    //console.log(tableTitles[0]);
 
-// -------------------------------------------------------
-// Extract Total qty. from Lines table (by row index)
-// -------------------------------------------------------
-var totalQty = [];
-for (let i = 0; i < sectionCollection.length; i++) {
-    var tableTitles = sectionCollection[i].getElementsByClassName("s-h1-titles-h1-title-text");
     if (tableTitles.length > 0 && tableTitles[0].innerHTML.includes('Lines')) {
-        var tableGrids = sectionCollection[i].getElementsByClassName("s-grid-table-body");
+        console.log('Getting data from Lines table...');
+
+        // console.log("found Application table");
+
+        var tableGrids = collection[i].getElementsByClassName("s-grid-table-body");
+        
+
         if (tableGrids.length > 0) {
             var rows = tableGrids[0].rows;
+            console.log("Lines table length: " + rows.length);
+
             for (let j = 0; j < rows.length; j++) {
-                // Total qty. is in the 6th column (index 5)
+
+                // Extract Total qty. value (assume 6th cell, index 5)
                 var qtyCell = rows[j].getElementsByClassName("s-inplace-value-read")[5];
                 if (qtyCell) {
                     totalQty.push(qtyCell.innerText || qtyCell.textContent);
                 } else {
                     totalQty.push("");
                 }
+            } 
+
+            var secondTableRows = tableGrids[1].rows;
+            for (let j = 0; j < secondTableRows.length; j++) {
+                // var columns = rows[j].getElementsByClassName("s-grid-cell-edit s-inplace s-readonly");
+                // console.log("found columns");
+
+                var descriptionString = secondTableRows[j].getElementsByClassName("s-inplace-value-read");
+                if (descriptionString.length > 0) {
+                    // console.log("found description column: " + descriptionString[0].value);
+                    description.push(descriptionString[0].innerHTML);
+                }       
             }
         }
     }
 }
-console.log("Total qty. array:", totalQty);
 
-// -------------------------------------------------------
-// Build tab-separated string and copy to clipboard
-// -------------------------------------------------------
-var copiedValue = number + '\t' + reference + '\t' + date + '\n';
-for (let i = 0; i < description.length; i++) {
-    copiedValue += description[i] + '\t' + '\n';
-}
-for (let i = 0; i < formula.length; i++) {
-    // Add formula, description1, totalQty (tab-separated)
-    copiedValue += formula[i] + '\t' + description1[i] + '\t' + (totalQty[i] || '') + '\n';
+console.log("------------------------------------------------");
+console.log("formula: " + formula + " | description1: " + description1);
+console.log("appli.: " + appliString);
+console.log("legislative: " + legislativeString);
+console.log("totalQty: " + totalQty);
+console.log("------------------------------------------------");
+
+/// -------------------------------------------------------
+/// Copy data to clipboard
+/// -------------------------------------------------------
+var copiedValue = '';
+
+for (let i = 0; i < formula.length-1; i++) {
+    copiedValue += formula[i] + '\t' + description1[i] + '\t' + date + '\t\t' + number + '\t\t' + reference + '\t' + appliString[0] + '\t' + legislativeString[0] + '\t' + totalQty[i];
+    copiedValue += '\n';
 }
 
+copyTextToClipboard(copiedValue);
+/**
 navigator.permissions.query({name: "clipboard-write"}).then((result) => {
     if (result.state === "granted" || result.state === "prompt") {
         navigator.clipboard.writeText(copiedValue);
+        
+        // Alert the copied text
+        alert("Result copied to clipboard: " + copiedValue);
+    } else {
+        alert("Do not have permissions for clipboard-write");
     }
 });
+**/
 
-alert("Result copied to clipboard: " + copiedValue);
+function copyTextToClipboard(text) {
+  //Create a textbox field where we can insert text to. 
+  var copyFrom = document.createElement("textarea");
+
+  //Set the text content to be the text you wished to copy.
+  copyFrom.textContent = text;
+
+  //Append the textbox field into the body as a child. 
+  //"execCommand()" only works when there exists selected text, and the text is inside 
+  //document.body (meaning the text is part of a valid rendered HTML element).
+  document.body.appendChild(copyFrom);
+
+  //Select all the text!
+  copyFrom.select();
+
+  //Execute command
+  document.execCommand('copy');
+
+  //(Optional) De-select the text using blur(). 
+  copyFrom.blur();
+
+  //Remove the textbox field from the document.body, so no other JavaScript nor 
+  //other elements can get access to this.
+  document.body.removeChild(copyFrom);
+}
