@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "Test Form Filler",
+    "description": "Populate fields and call an api",
+    "version": "1.0",
+    "action": {
+        "default_title": "Click here to load form data!",
+        "default_popup": "index.html"
+    },
+    "host_permissions": ["*://*/*"],
+    "permissions": [
+        "scripting",
+        "tabs",
+        "activeTab"
+    ]
+}
