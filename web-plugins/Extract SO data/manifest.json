@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Export Sale Order Data",
+    "description": "Export data and copy to clipboard",
+    "homepage_url": "https://github.com/Virgil-Vo/my-angel-assistants",
+    "version": "1.0",
+    "action": {
+        "default_title": "Export data to clipboard!",
+        "default_popup": "index.html"
+    },
+    "host_permissions": ["*://*/*"],
+    "permissions": [
+        "scripting",
+        "tabs",
+        "activeTab",
+        "clipboardWrite"
+    ]
+}
