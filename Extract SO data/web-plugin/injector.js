@@ -178,7 +178,11 @@ console.log("------------------------------------------------");
 var copiedValue = '';
 
 for (let i = 0; i < formula.length-1; i++) {
-    copiedValue += formula[i] + '\t' + description1[i] + '\t' + date + '\t\t' + number + '\t\t' + reference + '\t' + appliString[0] + '\t' + legislativeString[0] + '\t' + totalQty[i];
+
+    /// Convert gram to kilogram before copy
+    let qty = parseFloat(totalQty[i]);
+    let qtyOut = (!isNaN(qty) ? (qty * 1000).toString() : '');
+    copiedValue += formula[i] + '\t' + description1[i] + '\t' + date + '\t\t' + number + '\t\t' + reference + '\t' + appliString[0] + '\t' + legislativeString[0] + '\t' + qtyOut;
     copiedValue += '\n';
 }
 
