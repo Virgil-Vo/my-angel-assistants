@@ -35,8 +35,7 @@
         var copiedValue = '';
 
         // Translate the top, mid, and base descriptors from French to English 
-        // using a reference table inside the ../translator/French-English-OD-terminology.xlsx file
-
+        // using a reference table inside the translator/French-English-OD-terminology.csv file
         const translatedTop = await translateDescriptors(topDescriptors);
         const translatedMid = await translateDescriptors(midDescriptors);
         const translatedBase = await translateDescriptors(baseDescriptors);
@@ -46,10 +45,18 @@
         console.log("Translated MID Descriptors: from " + midDescriptors.join(', ') + " to " + translatedMid.join(', '));
         console.log("Translated BASE Descriptors: from " + baseDescriptors.join(', ') + " to " + translatedBase.join(', '));
 
+        const capitalize = arr => arr.map(term => 
+            term.split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ')
+        );
+
+        // Prepare the copied value in tab-separated format
+        // recase all descriptors to start with a capital letter
         copiedValue += family + '\t';
-        copiedValue += translatedTop.join(', ') + '\t';
-        copiedValue += translatedMid.join(', ') + '\t';
-        copiedValue += translatedBase.join(', ');
+        copiedValue += capitalize(translatedTop).join(', ') + '\t';
+        copiedValue += capitalize(translatedMid).join(', ') + '\t';
+        copiedValue += capitalize(translatedBase).join(', ');
 
         copyTextToClipboard(copiedValue);
         // If all went well, notify success
