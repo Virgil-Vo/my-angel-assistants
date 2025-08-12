@@ -59,21 +59,53 @@
         chrome.runtime.sendMessage({ exportResult: 'error', error: err && err.message ? err.message : String(err) });
     }
 
+    function getDescriptionSection() {
+
+        var descriptionSection = Array.from(document.querySelectorAll(".s-h1-titles-h1-title-text"))
+            .find(el => el.textContent.trim() === "Description")
+            ?.closest('.s-h1');
+
+        if (!descriptionSection) {
+            console.error("Description section not found.");
+            return '';
+        }
+
+        return descriptionSection;
+    }
+
     // Extract 'Family' 
     function extractFamily() {
-        var family = document.querySelector("#\\36 9-521-input")
+        // Locate the Desciption section:
+        // - the class s-h1 where the s-h1-titles-h1-title-text is Description
+        var descriptionSection = getDescriptionSection();
+
+        // Get the input field with class s-field-input s-readonly inside the description section
+        if (!descriptionSection) {
+            console.error("Description section not found.");
+            return '';
+        }
+
+        var family = descriptionSection.querySelector(".s-field-input.s-readonly");
         if (family) {
+            console.log("Family: " + family.value);
             return family.value.trim();
         }
+        console.error("Family input field not found.");
         return '';
     }
 
     // Extract all 'Descriptor head note' (TOP) from a table
     // Get the 4th column (index 3) which contains the TOP Description
     function extractTopDescriptors() {
-        var topDescriptors = [];
-        var table = document.querySelector("#layout-slot-69-549 > div > article > div.s-array-core > div.s-grid-slot > div > div.s-grid-slot-table-scroll > div.s-grid-slot-body > table");
+        // Locate the Desciption section:
+        // - the class s-h1 where the s-h1-titles-h1-title-text is Description
+        var descriptionSection = getDescriptionSection();
+
+        // Get the first table with class s-grid-table-body from the description section
+        var table = descriptionSection.querySelectorAll(".s-grid-table-body")[0];
         var rows = table.rows;
+
+        var topDescriptors = [];
 
         for (let i = 0; i < rows.length; i++) {
             // Get the 4th column (index 3) which contains the TOP Description
@@ -92,9 +124,15 @@
     // Extract all 'Descriptor heart note' (MID) from a table
     // Get the 4th column (index 3) which contains the MID Description
     function extractMidDescriptors() {
-        var heartDescriptors = [];
-        var table = document.querySelector("#layout-slot-69-555 > div > article > div.s-array-core > div.s-grid-slot > div > div.s-grid-slot-table-scroll > div.s-grid-slot-body > table");
+        // Locate the Desciption section:
+        // - the class s-h1 where the s-h1-titles-h1-title-text is Description
+        var descriptionSection = getDescriptionSection();
+
+        // Get the first table with class s-grid-table-body from the description section
+        var table = descriptionSection.querySelectorAll(".s-grid-table-body")[1];
         var rows = table.rows;
+
+        var heartDescriptors = [];
 
         for (let i = 0; i < rows.length; i++) {
             // Get the 4th column (index 3) which contains the MID Description
@@ -112,9 +150,15 @@
     // Extract all 'Descriptor base note' (BASE) from a table
     // Get the 4th column (index 3) which contains the BASE Description
     function extractBaseDescriptors() {
-        var baseDescriptors = [];
-        var table = document.querySelector("#layout-slot-69-561 > div > article > div.s-array-core > div.s-grid-slot > div > div.s-grid-slot-table-scroll > div.s-grid-slot-body > table");
+        // Locate the Desciption section:
+        // - the class s-h1 where the s-h1-titles-h1-title-text is Description
+        var descriptionSection = getDescriptionSection();
+
+        // Get the first table with class s-grid-table-body from the description section
+        var table = descriptionSection.querySelectorAll(".s-grid-table-body")[2];
         var rows = table.rows;
+
+        var baseDescriptors = [];
 
         for (let i = 0; i < rows.length; i++) {
             // Skip rows that don't have enough cells
