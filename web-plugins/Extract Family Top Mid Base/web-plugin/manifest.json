@@ -1,0 +1,26 @@
+{
+    "manifest_version": 3,
+    "name": "Export product data for Cotation",
+    "description": "Export data and copy to clipboard",
+    "homepage_url": "https://github.com/Virgil-Vo/my-angel-assistants",
+    "version": "1.0",
+    "action": {
+        "default_title": "Export data to clipboard!",
+        "default_popup": "index.html"
+    },
+    "host_permissions": ["*://*/*"],
+    "permissions": [
+        "scripting",
+        "tabs",
+        "activeTab",
+        "clipboardWrite"
+    ],
+    "web_accessible_resources": [
+    {
+      "resources": [
+        "translator/French-English-OD-terminology.csv"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
