@@ -15,6 +15,21 @@
 
 (async function () {
     try {
+        var productIds = ['product-id-1', 'product-id-2']; // Example product IDs
+        var mainSection = document.querySelector('.s-h2-body');
+
+        var productInputField = mainSection.querySelector('.s-field s-responsive-field-size-36');
+
+        for (let productId of productIds) {
+            // Input the product ID into the input field with class s-field-input
+        }
+        
+    } catch (err) {
+        // Notify failure
+        chrome.runtime.sendMessage({ exportResult: 'error', error: err && err.message ? err.message : String(err) });
+    }
+
+    async function extractData() {
         // Extract 'Family'
         const family = extractFamily();
         // Extract 'Descriptor head note' (TOP)
@@ -61,9 +76,6 @@
         copyTextToClipboard(copiedValue);
         // If all went well, notify success
         chrome.runtime.sendMessage({ exportResult: 'success' });
-    } catch (err) {
-        // Notify failure
-        chrome.runtime.sendMessage({ exportResult: 'error', error: err && err.message ? err.message : String(err) });
     }
 
     function getDescriptionSection() {
